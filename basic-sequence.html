@@ -1,0 +1,65 @@
+<link rel="import" href="../basic-modes/basic-modes.html">
+
+<polymer-element name="basic-sequence" extends="basic-modes" attributes="canGoNext canGoPrevious">
+
+<script>
+Polymer( "basic-sequence", {
+
+  /**
+   * True if it there is at least one child after the active one.
+   *
+   * @property canGoNext
+   */
+  // TODO: This property and its companion canGoPrevious should be read-only,
+  // but it's not clear how to create a bindable, read-only property.
+  // See http://stackoverflow.com/questions/23900203/easiest-way-for-a-polymer-element-to-declare-a-bindable-property-with-a-getter-s.
+  canGoNext: false,
+  get _canGoNext() {
+    return ( this.selectedIndex + 1 < this.distributedChildren.length );
+  },
+
+  /**
+   * True if it there is at least one child after the active one. Read-only.
+   *
+   * @property canGoPrevious
+   */
+  // TODO: See note at canGoNext.
+  canGoPrevious: false,
+  get _canGoPrevious() {
+    return ( this.selectedIndex > 0 );
+  },
+
+  /**
+   * Move to the next child in the sequence of children.
+   * If the last child is already the active one being shown, this has no effect.
+   *
+   * @method next
+   */
+  next: function() {
+    if ( this.canGoNext ) {
+      this.selected = this.selectedIndex + 1;
+    }
+  },
+
+  selectedIndexChanged: function() {
+    this.super();
+    this.canGoNext = this._canGoNext;
+    this.canGoPrevious = this._canGoPrevious;
+  },
+
+  /**
+   * Move to the previous child in the sequence of children.
+   * If the first child is already the active one being shown, this has no effect.
+   *
+   * @method previous
+   */
+  previous: function() {
+    if ( this.canGoPrevious ) {
+      this.selected = this.selectedIndex - 1;
+    }
+  }
+
+});
+</script>
+
+</polymer-element>
