@@ -2,6 +2,18 @@
 
 <polymer-element name="basic-sequence" extends="basic-modes" attributes="canGoNext canGoPrevious">
 
+<template>
+  <style>
+  ::content :not(.core-selected) {
+    display: block;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+  }
+  </style>
+  <shadow></shadow>
+</template>
+
 <script>
 Polymer( "basic-sequence", {
 
@@ -45,6 +57,7 @@ Polymer( "basic-sequence", {
     this.super();
     this.canGoNext = this._canGoNext;
     this.canGoPrevious = this._canGoPrevious;
+    this._slideToIndex( this.selectedIndex );
   },
 
   /**
@@ -57,7 +70,40 @@ Polymer( "basic-sequence", {
     if ( this.canGoPrevious ) {
       this.selected = this.selectedIndex - 1;
     }
-  }
+  },
+
+  _slide: function( direction, oldItem, newItem ) {
+    var player = document.timeline.play( new Animation( oldItem, [
+      {opacity: "1" },
+      {opacity: "0" }
+    ], 1000 ));
+    var player = document.timeline.play( new Animation( newItem, [
+      {opacity: "0" }, 
+      {opacity: "1" }
+    ], 1000 ));
+  },
+
+  _slideToIndex: function( newIndex ) {
+    var oldIndex = this._previousSelectionIndex;
+    this._previousSelectionIndex = newIndex;
+    if ( oldIndex == null ) {
+      // First time selecting, no slide necessary.
+      return;
+    }
+    if ( newIndex === oldIndex ) {
+      // We shouldn't have received an event in this case, but just in case...
+      return;
+    }
+    var direction = ( newIndex > oldIndex );
+    var items = this.items;
+    var oldItem = items[ oldIndex ];
+    var newItem = items[ newIndex ];
+    var arrow = direction ? " -> " : " <- ";
+    console.log( oldIndex + arrow + newIndex );
+    this._slide( direction, oldItem, newItem );
+  },
+
+  _previousSelectionIndex: null
 
 });
 </script>
