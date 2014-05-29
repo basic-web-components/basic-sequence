@@ -7,8 +7,8 @@
   ::content :not(.core-selected) {
     display: block;
     left: 0;
-    opacity: 0;
     position: absolute;
+    transform: translateX(100%);
   }
   </style>
   <shadow></shadow>
@@ -57,7 +57,7 @@ Polymer( "basic-sequence", {
     this.super();
     this.canGoNext = this._canGoNext;
     this.canGoPrevious = this._canGoPrevious;
-    this._slideToIndex( this.selectedIndex );
+    this._transitionToIndex( this.selectedIndex );
   },
 
   /**
@@ -72,18 +72,35 @@ Polymer( "basic-sequence", {
     }
   },
 
-  _slide: function( direction, oldItem, newItem ) {
-    var player = document.timeline.play( new Animation( oldItem, [
-      {opacity: "1" },
-      {opacity: "0" }
-    ], 1000 ));
-    var player = document.timeline.play( new Animation( newItem, [
-      {opacity: "0" }, 
-      {opacity: "1" }
-    ], 1000 ));
+  _transition: function( direction, oldItem, newItem ) {
+    var duration = 400;
+    // var player = document.timeline.play( new Animation( oldItem, [
+    //   { opacity: "1" },
+    //   { opacity: "0" }
+    // ], duration ));
+    // var player = document.timeline.play( new Animation( newItem, [
+    //   { opacity: "0" }, 
+    //   { opacity: "1" }
+    // ], duration ));
+    var slideOut = direction ? "-100%": "100%";
+    var playerOld = document.timeline.play( new Animation( oldItem, [
+      { transform: "translateX(0)" },
+      { transform: "translateX(" + slideOut + ")" }
+    ], {
+      duration: duration,
+      easing: "ease"
+    }));
+    var slideIn = direction ? "100%" : "-100%";
+    var playerNew = document.timeline.play( new Animation( newItem, [
+      { transform: "translateX(" + slideIn + ")" }, 
+      { transform: "translateX(0)" }
+    ], {
+      duration: duration,
+      easing: "ease"
+    }));
   },
 
-  _slideToIndex: function( newIndex ) {
+  _transitionToIndex: function( newIndex ) {
     var oldIndex = this._previousSelectionIndex;
     this._previousSelectionIndex = newIndex;
     if ( oldIndex == null ) {
@@ -100,7 +117,7 @@ Polymer( "basic-sequence", {
     var newItem = items[ newIndex ];
     var arrow = direction ? " -> " : " <- ";
     console.log( oldIndex + arrow + newIndex );
-    this._slide( direction, oldItem, newItem );
+    this._transition( direction, oldItem, newItem );
   },
 
   _previousSelectionIndex: null
