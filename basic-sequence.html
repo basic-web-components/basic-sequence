@@ -4,11 +4,29 @@
 
 <template>
   <style>
+  ::content {
+    transform: translateX(0);
+  }
+
   ::content :not(.core-selected) {
     display: block;
     left: 0;
     position: absolute;
+    visibility: hidden;
+  }
+
+  ::content .offStage {
+    transition: transform 0.001s;
+  }
+  ::content .offStagePrevious {
+    transform: translateX(-100%);
+  }
+  ::content .offStageNext {
     transform: translateX(100%);
+  }
+  ::content .sequenceTransition {
+    transition: transform 1s;
+    /*visibility: visible;*/
   }
   </style>
   <shadow></shadow>
@@ -53,6 +71,16 @@ Polymer( "basic-sequence", {
     }
   },
 
+  ready: function() {
+    // TODO: Support Safari with "webkitTransitionEnd". Don't wire up both on Chrome.
+    // this.addEventListener( "webkitTransitionEnd", function() {
+    //   console.log( "webkitTransitionEnd" );
+    // });
+    this.addEventListener( "transitionend", function( event ) {
+      this._transitionComplete( event.target );
+    }.bind( this ));
+  },
+
   selectedIndexChanged: function() {
     this.super();
     this.canGoNext = this._canGoNext;
@@ -72,7 +100,7 @@ Polymer( "basic-sequence", {
     }
   },
 
-  _transition: function( direction, oldItem, newItem ) {
+  _transitionStart: function( direction, oldItem, newItem ) {
     var duration = 300;
     // var player = document.timeline.play( new Animation( oldItem, [
     //   { opacity: "1" },
@@ -82,22 +110,45 @@ Polymer( "basic-sequence", {
     //   { opacity: "0" }, 
     //   { opacity: "1" }
     // ], duration ));
-    var slideOut = direction ? "-100%": "100%";
-    var playerOld = document.timeline.play( new Animation( oldItem, [
-      { transform: "translateX(0)" },
-      { transform: "translateX(" + slideOut + ")" }
-    ], {
-      duration: duration,
-      easing: "ease"
-    }));
-    var slideIn = direction ? "100%" : "-100%";
-    var playerNew = document.timeline.play( new Animation( newItem, [
-      { transform: "translateX(" + slideIn + ")" }, 
-      { transform: "translateX(0)" }
-    ], {
-      duration: duration,
-      easing: "ease"
-    }));
+    // var slideOut = direction ? "-100%": "100%";
+    // var playerOld = document.timeline.play( new Animation( oldItem, [
+    //   { transform: "translateX(0)" },
+    //   { transform: "translateX(" + slideOut + ")" }
+    // ], {
+    //   duration: duration,
+    //   easing: "ease"
+    // }));
+    // var slideIn = direction ? "100%" : "-100%";
+    // var playerNew = document.timeline.play( new Animation( newItem, [
+    //   { transform: "translateX(" + slideIn + ")" }, 
+    //   { transform: "translateX(0)" }
+    // ], {
+    //   duration: duration,
+    //   easing: "ease"
+    // }));
+    // oldItem.addEventListener( "webkitTransitionEnd", function() {
+    //   console.log( "webkitTransitionEnd" );
+    // });
+    // oldItem.addEventListener( "transitionend", function() {
+    //   console.log( "transitionend" );
+    // });
+    oldItem.classList.add( "sequenceTransition" );
+    oldItem.classList.add( direction ? "offStagePrevious" : "offStageNext" );
+    newItem.classList.add( "offStage" );
+    newItem.classList.add( direction ? "offStageNext" : "offStagePrevious" );
+  },
+
+  _transitionComplete: function( element ) {
+    console.log( element.classList );
+    if ( element.classList.contains( "offStage" )) {
+      // Start real transition.
+      element.classList.remove( "offStage" );
+      element.classList.add( "sequenceTransition" );
+    } else {
+      element.classList.remove( "sequenceTransition" );
+    }
+    element.classList.remove( "offStagePrevious" );
+    element.classList.remove( "offStageNext" );   
   },
 
   _transitionToIndex: function( newIndex ) {
@@ -117,7 +168,7 @@ Polymer( "basic-sequence", {
     var newItem = items[ newIndex ];
     var arrow = direction ? " -> " : " <- ";
     console.log( oldIndex + arrow + newIndex );
-    this._transition( direction, oldItem, newItem );
+    this._transitionStart( direction, oldItem, newItem );
   },
 
   _previousSelectionIndex: null
