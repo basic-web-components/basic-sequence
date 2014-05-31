@@ -11,10 +11,9 @@
     visibility: hidden;
   }
 
-  ::content .onStage {
-    transform: translateX(0);
-  }
-  ::content .offStage {
+  ::content .sequenceTransition {
+    transition: transform 0.3s;
+    visibility: visible;
   }
   ::content .offStagePrevious {
     transform: translateX(-100%);
@@ -22,9 +21,13 @@
   ::content .offStageNext {
     transform: translateX(100%);
   }
-  ::content .sequenceTransition {
-    transition: transform 0.3s;
-    visibility: visible;
+  ::content .onStage {
+    transform: translateX(0);
+  }
+  ::content .enteringStage {
+  }
+  ::content .leavingStage {
+    /*transform: translateX(0);*/
   }
   </style>
   <shadow></shadow>
@@ -85,7 +88,7 @@ Polymer( "basic-sequence", {
     this.canGoPrevious = this._canGoPrevious;
     var selectedIndex = this.selectedIndex;
     Array.prototype.forEach.call( this.items, function( item, index ) {
-      item.classList.toggle( "offStage", index !== selectedIndex );
+      // item.classList.toggle( "offStage", index !== selectedIndex );
       item.classList.toggle( "offStagePrevious", index < selectedIndex );
       item.classList.toggle( "offStageNext", index > selectedIndex );
     });
@@ -106,6 +109,8 @@ Polymer( "basic-sequence", {
 
   _transitionComplete: function( element ) {
     element.classList.remove( "sequenceTransition" );
+    element.classList.remove( "enteringStage" );
+    element.classList.remove( "leavingStage" );
   },
 
   _transitionToIndex: function( newIndex ) {
@@ -126,15 +131,17 @@ Polymer( "basic-sequence", {
 
     var oldItem = items[ oldIndex ];
     oldItem.classList.add( "sequenceTransition" );
-    oldItem.classList.add( "offStage" );
+    // oldItem.classList.add( "offStage" );
     oldItem.classList.add( movingForward ? "offStagePrevious" : "offStageNext" );
+    oldItem.classList.add( "leavingStage" );
     oldItem.classList.remove( "onStage" );
 
     var newItem = items[ newIndex ];
     newItem.classList.add( "sequenceTransition" );
-    newItem.classList.remove( "offStage" );
+    // newItem.classList.remove( "offStage" );
     newItem.classList.remove( "offStagePrevious" );
     newItem.classList.remove( "offStageNext" );
+    newItem.classList.add( "enteringStage" );
     newItem.classList.add( "onStage" );
   },
 
