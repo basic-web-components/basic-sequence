@@ -4,10 +4,6 @@
 
 <template>
   <style>
-  ::content {
-    /*transform: translateX(0);*/
-  }
-
   ::content :not(.core-selected) {
     display: block;
     left: 0;
@@ -15,23 +11,19 @@
     visibility: hidden;
   }
 
-  ::content .waiting {
-    visibility: visible;
+  ::content .onStage {
+    transform: translateX(0);
   }
   ::content .offStage {
-    transition: transform 0.05s;
   }
   ::content .offStagePrevious {
     transform: translateX(-100%);
-  }
-  ::content .centerStage {
-    transform: translateX(0);
   }
   ::content .offStageNext {
     transform: translateX(100%);
   }
   ::content .sequenceTransition {
-    transition: transform 1s;
+    transition: transform 0.3s;
     visibility: visible;
   }
   </style>
@@ -93,6 +85,7 @@ Polymer( "basic-sequence", {
     this.canGoPrevious = this._canGoPrevious;
     var selectedIndex = this.selectedIndex;
     Array.prototype.forEach.call( this.items, function( item, index ) {
+      item.classList.toggle( "offStage", index !== selectedIndex );
       item.classList.toggle( "offStagePrevious", index < selectedIndex );
       item.classList.toggle( "offStageNext", index > selectedIndex );
     });
@@ -111,76 +104,12 @@ Polymer( "basic-sequence", {
     }
   },
 
-  _transitionStart: function( direction, oldItem, newItem ) {
-    var duration = 300;
-    // var player = document.timeline.play( new Animation( oldItem, [
-    //   { opacity: "1" },
-    //   { opacity: "0" }
-    // ], duration ));
-    // var player = document.timeline.play( new Animation( newItem, [
-    //   { opacity: "0" }, 
-    //   { opacity: "1" }
-    // ], duration ));
-    // var slideOut = direction ? "-100%": "100%";
-    // var playerOld = document.timeline.play( new Animation( oldItem, [
-    //   { transform: "translateX(0)" },
-    //   { transform: "translateX(" + slideOut + ")" }
-    // ], {
-    //   duration: duration,
-    //   easing: "ease"
-    // }));
-    // var slideIn = direction ? "100%" : "-100%";
-    // var playerNew = document.timeline.play( new Animation( newItem, [
-    //   { transform: "translateX(" + slideIn + ")" }, 
-    //   { transform: "translateX(0)" }
-    // ], {
-    //   duration: duration,
-    //   easing: "ease"
-    // }));
-    // oldItem.addEventListener( "webkitTransitionEnd", function() {
-    //   console.log( "webkitTransitionEnd" );
-    // });
-    // oldItem.addEventListener( "transitionend", function() {
-    //   console.log( "transitionend" );
-    // });
-    // oldItem.classList.add( "sequenceTransition" );
-    // oldItem.classList.add( direction ? "offStagePrevious" : "offStageNext" );
-
-    // this._oldItem = oldItem;
-    // this._direction = direction;
-    // oldItem.classList.add( "waiting" );
-    // newItem.classList.add( "offStage" );
-    // newItem.classList.add( direction ? "offStageNext" : "offStagePrevious" );
-
-    oldItem.classList.add( "sequenceTransition" );
-    oldItem.classList.add( direction ? "offStagePrevious" : "offStageNext" );
-    oldItem.classList.remove( "centerStage" );
-    
-    newItem.classList.add( "sequenceTransition" );
-    newItem.classList.remove( "offStagePrevious" );
-    newItem.classList.remove( "offStageNext" );
-    newItem.classList.add( "centerStage" );
-  },
-
   _transitionComplete: function( element ) {
-    // var oldItem = this._oldItem;
-    // var direction = this._direction;
-    // if ( element.classList.contains( "offStage" )) {
-    //   // Start real transition.
-    //   oldItem.classList.add( "sequenceTransition" );
-    //   oldItem.classList.remove( "waiting" );
-    //   oldItem.classList.add( direction ? "offStagePrevious" : "offStageNext" );
-    //   element.classList.remove( "offStage" );
-    //   element.classList.add( "sequenceTransition" );
-    // } else {
-    //   element.classList.remove( "sequenceTransition" );
-    // }
-    // element.classList.remove( "offStagePrevious" );
-    // element.classList.remove( "offStageNext" );
     element.classList.remove( "sequenceTransition" );
   },
 
   _transitionToIndex: function( newIndex ) {
+
     var oldIndex = this._previousSelectionIndex;
     this._previousSelectionIndex = newIndex;
     if ( oldIndex == null ) {
@@ -191,13 +120,22 @@ Polymer( "basic-sequence", {
       // We shouldn't have received an event in this case, but just in case...
       return;
     }
-    var direction = ( newIndex > oldIndex );
+
     var items = this.items;
+    var movingForward = ( newIndex > oldIndex );
+
     var oldItem = items[ oldIndex ];
+    oldItem.classList.add( "sequenceTransition" );
+    oldItem.classList.add( "offStage" );
+    oldItem.classList.add( movingForward ? "offStagePrevious" : "offStageNext" );
+    oldItem.classList.remove( "onStage" );
+
     var newItem = items[ newIndex ];
-    var arrow = direction ? " -> " : " <- ";
-    console.log( oldIndex + arrow + newIndex );
-    this._transitionStart( direction, oldItem, newItem );
+    newItem.classList.add( "sequenceTransition" );
+    newItem.classList.remove( "offStage" );
+    newItem.classList.remove( "offStagePrevious" );
+    newItem.classList.remove( "offStageNext" );
+    newItem.classList.add( "onStage" );
   },
 
   _previousSelectionIndex: null
