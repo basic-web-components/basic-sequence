@@ -154,6 +154,8 @@ Polymer( "basic-sequence", {
 
     oldItem.classList.add( "sequenceTransition" );
     oldItem.classList.add( direction ? "offStagePrevious" : "offStageNext" );
+    oldItem.classList.remove( "centerStage" );
+    
     newItem.classList.add( "sequenceTransition" );
     newItem.classList.remove( "offStagePrevious" );
     newItem.classList.remove( "offStageNext" );
