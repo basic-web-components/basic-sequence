@@ -27,7 +27,21 @@
   ::content .enteringStage {
   }
   ::content .leavingStage {
-    /*transform: translateX(0);*/
+  }
+
+  :host([effect="cover"]) ::content .enteringStage {
+    z-index: 1;
+  }
+  :host([effect="cover"]) ::content .leavingStage {
+    transform: translateX(0.01px);
+  }
+
+  :host([effect="uncover"]) ::content .enteringStage {
+    opacity: 0.5;
+    transform: translateX(0.01px);
+  }
+  :host([effect="uncover"]) ::content .leavingStage {
+    z-index: 1;
   }
   </style>
   <shadow></shadow>
@@ -69,6 +83,12 @@ Polymer( "basic-sequence", {
   next: function() {
     if ( this.canGoNext ) {
       this.selected = this.selectedIndex + 1;
+    }
+  },
+
+  publish: {
+    effect: {
+      reflect: true
     }
   },
 
