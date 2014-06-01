@@ -11,22 +11,19 @@
     visibility: hidden;
   }
 
-  ::content .sequenceTransition {
+  :host([effect]) ::content .sequenceTransition {
     transition: transform 0.3s;
     visibility: visible;
   }
-  ::content .offStagePrevious {
+
+  :host([effect="slide"]) ::content .offStagePrevious {
     transform: translateX(-100%);
   }
-  ::content .offStageNext {
+  :host([effect="slide"]) ::content .offStageNext {
     transform: translateX(100%);
   }
-  ::content .onStage {
+  :host([effect="slide"]) ::content .onStage {
     transform: translateX(0);
-  }
-  ::content .enteringStage {
-  }
-  ::content .leavingStage {
   }
 
   :host([effect="cover"]) ::content .enteringStage {
@@ -36,12 +33,15 @@
     transform: translateX(0.01px);
   }
 
-  :host([effect="uncover"]) ::content .enteringStage {
-    opacity: 0.5;
+  :host([effect="uncover"]) ::content .offStage {
     transform: translateX(0.01px);
   }
   :host([effect="uncover"]) ::content .leavingStage {
     z-index: 1;
+  }
+
+  :host([effect="crossfade"]) ::content .offStage {
+    opacity: 0;
   }
   </style>
   <shadow></shadow>
@@ -108,7 +108,7 @@ Polymer( "basic-sequence", {
     this.canGoPrevious = this._canGoPrevious;
     var selectedIndex = this.selectedIndex;
     Array.prototype.forEach.call( this.items, function( item, index ) {
-      // item.classList.toggle( "offStage", index !== selectedIndex );
+      item.classList.toggle( "offStage", index !== selectedIndex );
       item.classList.toggle( "offStagePrevious", index < selectedIndex );
       item.classList.toggle( "offStageNext", index > selectedIndex );
     });
@@ -150,19 +150,23 @@ Polymer( "basic-sequence", {
     var movingForward = ( newIndex > oldIndex );
 
     var oldItem = items[ oldIndex ];
-    oldItem.classList.add( "sequenceTransition" );
-    // oldItem.classList.add( "offStage" );
-    oldItem.classList.add( movingForward ? "offStagePrevious" : "offStageNext" );
-    oldItem.classList.add( "leavingStage" );
     oldItem.classList.remove( "onStage" );
+    oldItem.classList.add( "offStage" );
+    oldItem.classList.add( movingForward ? "offStagePrevious" : "offStageNext" );
 
     var newItem = items[ newIndex ];
-    newItem.classList.add( "sequenceTransition" );
-    // newItem.classList.remove( "offStage" );
+    newItem.classList.remove( "offStage" );
     newItem.classList.remove( "offStagePrevious" );
     newItem.classList.remove( "offStageNext" );
-    newItem.classList.add( "enteringStage" );
     newItem.classList.add( "onStage" );
+
+    if ( this.effect != null && this.effect !== "" ) {
+      // Start transition.
+      oldItem.classList.add( "sequenceTransition" );
+      oldItem.classList.add( "leavingStage" );
+      newItem.classList.add( "sequenceTransition" );
+      newItem.classList.add( "enteringStage" );
+    }
   },
 
   _previousSelectionIndex: null
