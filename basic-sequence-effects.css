@@ -1,0 +1,68 @@
+/*
+ * Transition effects.
+ *
+ * In general, the effect of going backward should be like replaying the forward
+ * effect in reverse. Effect names describe what happens when going forward.
+ */
+
+/* A simple crossfade */
+:host([effect="crossfade"]) ::content .sequenceTransition {
+  transition: opacity 1s;
+}
+:host([effect="crossfade"]) ::content .offStage {
+  opacity: 0;
+}
+:host([effect="crossfade"]) ::content .core-selected {
+  opacity: 1;
+}
+
+/* Incoming element pushes out outgoing element */
+:host([effect="slide"]) ::content .sequenceTransition {
+  transition: transform 0.3s;
+}
+:host([effect="slide"]) ::content .offStagePrevious {
+  transform: translateX(-100%);
+}
+:host([effect="slide"]) ::content .offStageNext {
+  transform: translateX(100%);
+}
+:host([effect="slide"]) ::content .onStage {
+  transform: translateX(0);
+}
+
+/*
+ * Reveal going forward, cover going backwards.
+ * The effect is like starting with a complete a deck of cards, the removing
+ * cards to show more.
+ */
+:host([effect="reveal"]) ::content .sequenceTransition {
+  transition: transform 0.3s;
+}
+:host([effect="reveal"]) ::content .offStagePrevious {
+  transform: translateX(-100%);
+}
+:host([effect="reveal"]) ::content .offStageNext {
+  transform: translateX(0.01px);
+}
+:host([effect="reveal"]) ::content .enteringStageFromPrevious,
+:host([effect="reveal"]) ::content .leavingStageToPrevious {
+  z-index: 1;
+}
+
+/*
+ * Cover going forward, reveal going backwards.
+ * The effect is like starting with one card, then piling on more.
+ */
+:host([effect="cover"]) ::content .sequenceTransition {
+  transition: transform 0.3s;
+}
+:host([effect="cover"]) ::content .offStagePrevious {
+  transform: translateX(0.01px);
+}
+:host([effect="cover"]) ::content .offStageNext {
+  transform: translateX(100%);
+}
+:host([effect="cover"]) ::content .enteringStageFromNext,
+:host([effect="cover"]) ::content .leavingStageToNext {
+  z-index: 1;
+}
