@@ -15,6 +15,16 @@
     visibility: visible;
   }
 
+  :host([effect="crossfade"]) ::content .sequenceTransition {
+    transition: opacity 1s;
+  }
+  :host([effect="crossfade"]) ::content .offStage {
+    opacity: 0;
+  }
+  :host([effect="crossfade"]) ::content .core-selected {
+    opacity: 1;
+  }
+
   :host([effect="slide"]) ::content .sequenceTransition {
     transition: transform 0.3s;
   }
@@ -60,15 +70,35 @@
     z-index: 1;
   }
 
-  :host([effect="crossfade"]) ::content .sequenceTransition {
-    transition: opacity 1s;
+  /* deck-uncover = uncover going left, cover going right */
+  :host([effect="deck-uncover"]) ::content .sequenceTransition {
+    transition: transform 0.3s;
   }
-  :host([effect="crossfade"]) ::content .offStage {
-    opacity: 0;
+  :host([effect="deck-uncover"]) ::content .offStagePrevious {
+    transform: translateX(-100%);
   }
-  :host([effect="crossfade"]) ::content .core-selected {
-    opacity: 1;
+  :host([effect="deck-uncover"]) ::content .offStageNext {
+    transform: translateX(0.01px);
   }
+  :host([effect="deck-uncover"]) ::content .enteringStageFromPrevious,
+  :host([effect="deck-uncover"]) ::content .leavingStageToPrevious {
+    z-index: 1;
+  }
+
+  /* deck-cover = cover going left, uncover going right */
+  :host([effect="deck-cover"]) ::content .sequenceTransition {
+    transition: transform 0.3s;
+  }
+  :host([effect="deck-cover"]) ::content .offStagePrevious {
+    transform: translateX(0.01px);
+  }
+  :host([effect="deck-cover"]) ::content .offStageNext {
+    transform: translateX(100%);
+  }
+  :host([effect="deck-cover"]) ::content .enteringStageFromNext,
+  :host([effect="deck-cover"]) ::content .leavingStageToNext {
+    z-index: 1;
+  }  
   </style>
   <shadow></shadow>
 </template>
@@ -156,7 +186,11 @@ Polymer( "basic-sequence", {
   _transitionComplete: function( element ) {
     element.classList.remove( "sequenceTransition" );
     element.classList.remove( "enteringStage" );
+    element.classList.remove( "enteringStageFromNext" );
+    element.classList.remove( "enteringStageFromPrevious" );
     element.classList.remove( "leavingStage" );
+    element.classList.remove( "leavingStageToNext" );
+    element.classList.remove( "leavingStageToPrevious" );
   },
 
   _transitionToIndex: function( newIndex ) {
@@ -174,8 +208,8 @@ Polymer( "basic-sequence", {
 
     var items = this.items;
     var movingForward = ( newIndex > oldIndex );
-
     var oldItem = items[ oldIndex ];
+
     oldItem.classList.remove( "onStage" );
     oldItem.classList.add( "offStage" );
     oldItem.classList.add( movingForward ? "offStagePrevious" : "offStageNext" );
@@ -190,8 +224,10 @@ Polymer( "basic-sequence", {
       // Start transition.
       oldItem.classList.add( "sequenceTransition" );
       oldItem.classList.add( "leavingStage" );
+      oldItem.classList.add( movingForward ? "leavingStageToPrevious": "leavingStageToNext" );
       newItem.classList.add( "sequenceTransition" );
       newItem.classList.add( "enteringStage" );
+      newItem.classList.add( movingForward ? "enteringStageFromNext" : "enteringStageFromPrevious" );
     }
   },
 
