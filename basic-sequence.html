@@ -4,6 +4,9 @@
 
 <template>
   <style>
+  polyfill-next-selector {
+    content: ':not(.core-selected)';
+  }
   ::content :not(.core-selected) {
     display: block;
     left: 0;
@@ -11,6 +14,9 @@
     visibility: hidden;
   }
 
+  polyfill-next-selector {
+    content: ':host([effect]) .sequenceTransition';
+  }
   :host([effect]) ::content .sequenceTransition {
     visibility: visible;
   }

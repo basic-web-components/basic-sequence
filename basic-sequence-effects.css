@@ -6,25 +6,46 @@
  */
 
 /* A simple crossfade */
+polyfill-next-selector {
+  content: ':host([effect="crossfade"]) > .sequenceTransition';
+}
 :host([effect="crossfade"]) ::content .sequenceTransition {
   transition: opacity 1s;
 }
+polyfill-next-selector {
+  content: ':host([effect="crossfade"]) > .offStage';
+}
 :host([effect="crossfade"]) ::content .offStage {
   opacity: 0;
+}
+polyfill-next-selector {
+  content: ':host([effect="crossfade"]) > .core-selected';
 }
 :host([effect="crossfade"]) ::content .core-selected {
   opacity: 1;
 }
 
 /* Incoming element pushes out outgoing element */
+polyfill-next-selector {
+  content: ':host([effect="slide"]) > .sequenceTransition';
+}
 :host([effect="slide"]) ::content .sequenceTransition {
   transition: transform 0.3s;
+}
+polyfill-next-selector {
+  content: ':host([effect="slide"]) > .offStagePrevious';
 }
 :host([effect="slide"]) ::content .offStagePrevious {
   transform: translateX(-100%);
 }
+polyfill-next-selector {
+  content: ':host([effect="slide"]) > .offStageNext';
+}
 :host([effect="slide"]) ::content .offStageNext {
   transform: translateX(100%);
+}
+polyfill-next-selector {
+  content: ':host([effect="slide"]) > .onStage';
 }
 :host([effect="slide"]) ::content .onStage {
   transform: translateX(0);
@@ -35,14 +56,26 @@
  * The effect is like starting with a complete a deck of cards, the removing
  * cards to show more.
  */
+polyfill-next-selector {
+  content: '';
+}
 :host([effect="reveal"]) ::content .sequenceTransition {
   transition: transform 0.3s;
+}
+polyfill-next-selector {
+  content: '';
 }
 :host([effect="reveal"]) ::content .offStagePrevious {
   transform: translateX(-100%);
 }
+polyfill-next-selector {
+  content: '';
+}
 :host([effect="reveal"]) ::content .offStageNext {
   transform: translateX(0.01px);
+}
+polyfill-next-selector {
+  content: '';
 }
 :host([effect="reveal"]) ::content .enteringStageFromPrevious,
 :host([effect="reveal"]) ::content .leavingStageToPrevious {
@@ -53,14 +86,26 @@
  * Cover going forward, reveal going backwards.
  * The effect is like starting with one card, then piling on more.
  */
+polyfill-next-selector {
+  content: '';
+}
 :host([effect="cover"]) ::content .sequenceTransition {
   transition: transform 0.3s;
+}
+polyfill-next-selector {
+  content: '';
 }
 :host([effect="cover"]) ::content .offStagePrevious {
   transform: translateX(0.01px);
 }
+polyfill-next-selector {
+  content: '';
+}
 :host([effect="cover"]) ::content .offStageNext {
   transform: translateX(100%);
+}
+polyfill-next-selector {
+  content: '';
 }
 :host([effect="cover"]) ::content .enteringStageFromNext,
 :host([effect="cover"]) ::content .leavingStageToNext {
