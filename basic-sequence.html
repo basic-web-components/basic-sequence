@@ -40,8 +40,14 @@
     z-index: 1;
   }
 
+  :host([effect="crossfade"]) ::content .sequenceTransition {
+    transition: opacity 1s;
+  }
   :host([effect="crossfade"]) ::content .offStage {
     opacity: 0;
+  }
+  :host([effect="crossfade"]) ::content .core-selected {
+    opacity: 1;
   }
   </style>
   <shadow></shadow>
