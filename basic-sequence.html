@@ -12,10 +12,12 @@
   }
 
   :host([effect]) ::content .sequenceTransition {
-    transition: transform 0.3s;
     visibility: visible;
   }
 
+  :host([effect="slide"]) ::content .sequenceTransition {
+    transition: transform 0.3s;
+  }
   :host([effect="slide"]) ::content .offStagePrevious {
     transform: translateX(-100%);
   }
@@ -26,6 +28,15 @@
     transform: translateX(0);
   }
 
+  :host([effect="cover"]) ::content .sequenceTransition {
+    transition: transform 0.3s;
+  }
+  :host([effect="cover"]) ::content .offStagePrevious {
+    transform: translateX(-100%);
+  }
+  :host([effect="cover"]) ::content .offStageNext {
+    transform: translateX(100%);
+  }
   :host([effect="cover"]) ::content .enteringStage {
     z-index: 1;
   }
@@ -33,7 +44,16 @@
     transform: translateX(0.01px);
   }
 
-  :host([effect="uncover"]) ::content .offStage {
+  :host([effect="uncover"]) ::content .sequenceTransition {
+    transition: transform 0.3s;
+  }
+  :host([effect="uncover"]) ::content .offStagePrevious.leavingStage {
+    transform: translateX(-100%);
+  }
+  :host([effect="uncover"]) ::content .offStageNext.leavingStage {
+    transform: translateX(100%);
+  }
+  :host([effect="uncover"]) ::content .enteringStage {
     transform: translateX(0.01px);
   }
   :host([effect="uncover"]) ::content .leavingStage {
