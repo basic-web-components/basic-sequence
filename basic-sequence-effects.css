@@ -6,55 +6,55 @@
  */
 /* A simple crossfade */
 polyfill-next-selector {
-  content: ':host([effect="crossfade"]) > .sequenceTransition';
+  content: ':host([effect=crossfade]) > .sequenceTransition';
 }
-:host([effect="crossfade"]) ::content .sequenceTransition {
+:host([effect=crossfade]) ::content .sequenceTransition {
   transition: opacity 0.8s;
 }
 
 polyfill-next-selector {
-  content: ':host([effect="crossfade"]) > .offStage';
+  content: ':host([effect=crossfade]) > .offStage';
 }
-:host([effect="crossfade"]) ::content .offStage {
+:host([effect=crossfade]) ::content .offStage {
   opacity: 0;
 }
 
 polyfill-next-selector {
-  content: ':host([effect="crossfade"]) > .core-selected';
+  content: ':host([effect=crossfade]) > .core-selected';
 }
-:host([effect="crossfade"]) ::content .core-selected {
+:host([effect=crossfade]) ::content .core-selected {
   opacity: 1;
 }
 
 /* Incoming element pushes out outgoing element */
 polyfill-next-selector {
-  content: ':host([effect="slide"]) > .sequenceTransition';
+  content: ':host([effect=slide]) > .sequenceTransition';
 }
-:host([effect="slide"]) ::content .sequenceTransition {
+:host([effect=slide]) ::content .sequenceTransition {
   transition: -webkit-transform 0.3s; /* Safari */
   transition: transform 0.3s;
 }
 
 polyfill-next-selector {
-  content: ':host([effect="slide"]) > .offStagePrevious';
+  content: ':host([effect=slide]) > .offStagePrevious';
 }
-:host([effect="slide"]) ::content .offStagePrevious {
+:host([effect=slide]) ::content .offStagePrevious {
   -webkit-transform: translateX(-100%); /* Safari */
   transform: translateX(-100%);
 }
 
 polyfill-next-selector {
-  content: ':host([effect="slide"]) > .offStageNext';
+  content: ':host([effect=slide]) > .offStageNext';
 }
-:host([effect="slide"]) ::content .offStageNext {
+:host([effect=slide]) ::content .offStageNext {
   -webkit-transform: translateX(100%); /* Safari */
   transform: translateX(100%);
 }
 
 polyfill-next-selector {
-  content: ':host([effect="slide"]) > .onStage';
+  content: ':host([effect=slide]) > .onStage';
 }
-:host([effect="slide"]) ::content .onStage {
+:host([effect=slide]) ::content .onStage {
   -webkit-transform: translateX(0);  /* Safari */
   transform: translateX(0);
 }
@@ -66,34 +66,34 @@ polyfill-next-selector {
  * cards to show more.
  */
 polyfill-next-selector {
-  content: ':host([effect="reveal"]) > .sequenceTransition';
+  content: ':host([effect=reveal]) > .sequenceTransition';
 }
-:host([effect="reveal"]) ::content .sequenceTransition {
+:host([effect=reveal]) ::content .sequenceTransition {
   transition: -webkit-transform 0.3s;  /* Safari */
   transition: transform 0.3s;
 }
 
 polyfill-next-selector {
-  content: ':host([effect="reveal"]) > .offStagePrevious';
+  content: ':host([effect=reveal]) > .offStagePrevious';
 }
-:host([effect="reveal"]) ::content .offStagePrevious {
+:host([effect=reveal]) ::content .offStagePrevious {
   -webkit-transform: translateX(-100%);  /* Safari */
   transform: translateX(-100%);
 }
 
 polyfill-next-selector {
-  content: ':host([effect="reveal"]) > .offStageNext';
+  content: ':host([effect=reveal]) > .offStageNext';
 }
-:host([effect="reveal"]) ::content .offStageNext {
+:host([effect=reveal]) ::content .offStageNext {
   -webkit-transform: translateX(0.01px);  /* Safari */
   transform: translateX(0.01px);
 }
 
 polyfill-next-selector {
-  content: ':host([effect="reveal"]) > .enteringStageFromPrevious, :host([effect="reveal"]) > .leavingStageToPrevious';
+  content: ':host([effect=reveal]) > .enteringStageFromPrevious, :host([effect=reveal]) > .leavingStageToPrevious';
 }
-:host([effect="reveal"]) ::content .enteringStageFromPrevious,
-:host([effect="reveal"]) ::content .leavingStageToPrevious {
+:host([effect=reveal]) ::content .enteringStageFromPrevious,
+:host([effect=reveal]) ::content .leavingStageToPrevious {
   z-index: 1;
 }
 
@@ -103,33 +103,33 @@ polyfill-next-selector {
  * The effect is like starting with one card, then piling on more.
  */
 polyfill-next-selector {
-  content: ':host([effect="cover"]) > .sequenceTransition';
+  content: ':host([effect=cover]) > .sequenceTransition';
 }
-:host([effect="cover"]) ::content .sequenceTransition {
+:host([effect=cover]) ::content .sequenceTransition {
   transition: -webkit-transform 0.3s;  /* Safari */
   transition: transform 0.3s;
 }
 
 polyfill-next-selector {
-  content: ':host([effect="cover"]) > .offStagePrevious';
+  content: ':host([effect=cover]) > .offStagePrevious';
 }
-:host([effect="cover"]) ::content .offStagePrevious {
+:host([effect=cover]) ::content .offStagePrevious {
   -webkit-transform: translateX(0.01px);  /* Safari */
   transform: translateX(0.01px);
 }
 
 polyfill-next-selector {
-  content: ':host([effect="cover"]) > .offStageNext';
+  content: ':host([effect=cover]) > .offStageNext';
 }
-:host([effect="cover"]) ::content .offStageNext {
+:host([effect=cover]) ::content .offStageNext {
   -webkit-transform: translateX(100%);  /* Safari */
   transform: translateX(100%);
 }
 
 polyfill-next-selector {
-  content: ':host([effect="cover"]) > .enteringStageFromNext, :host([effect="cover"]) > .leavingStageToNext';
+  content: ':host([effect=cover]) > .enteringStageFromNext, :host([effect=cover]) > .leavingStageToNext';
 }
-:host([effect="cover"]) ::content .enteringStageFromNext,
-:host([effect="cover"]) ::content .leavingStageToNext {
+:host([effect=cover]) ::content .enteringStageFromNext,
+:host([effect=cover]) ::content .leavingStageToNext {
   z-index: 1;
 }
