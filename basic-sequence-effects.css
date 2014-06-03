@@ -61,28 +61,28 @@ polyfill-next-selector {
  * cards to show more.
  */
 polyfill-next-selector {
-  content: '';
+  content: ':host([effect="reveal"]) > .sequenceTransition';
 }
 :host([effect="reveal"]) ::content .sequenceTransition {
   transition: -webkit-transform 0.3s;
   transition: transform 0.3s;
 }
 polyfill-next-selector {
-  content: '';
+  content: ':host([effect="reveal"]) > .offStagePrevious';
 }
 :host([effect="reveal"]) ::content .offStagePrevious {
   -webkit-transform: translateX(-100%);
   transform: translateX(-100%);
 }
 polyfill-next-selector {
-  content: '';
+  content: ':host([effect="reveal"]) > .offStageNext';
 }
 :host([effect="reveal"]) ::content .offStageNext {
   -webkit-transform: translateX(0.01px);
   transform: translateX(0.01px);
 }
 polyfill-next-selector {
-  content: '';
+  content: ':host([effect="reveal"]) > .enteringStageFromPrevious, :host([effect="reveal"]) > .leavingStageToPrevious';
 }
 :host([effect="reveal"]) ::content .enteringStageFromPrevious,
 :host([effect="reveal"]) ::content .leavingStageToPrevious {
@@ -94,28 +94,28 @@ polyfill-next-selector {
  * The effect is like starting with one card, then piling on more.
  */
 polyfill-next-selector {
-  content: '';
+  content: ':host([effect="cover"]) > .sequenceTransition';
 }
 :host([effect="cover"]) ::content .sequenceTransition {
   transition: -webkit-transform 0.3s;
   transition: transform 0.3s;
 }
 polyfill-next-selector {
-  content: '';
+  content: ':host([effect="cover"]) > .offStagePrevious';
 }
 :host([effect="cover"]) ::content .offStagePrevious {
   -webkit-transform: translateX(0.01px);
   transform: translateX(0.01px);
 }
 polyfill-next-selector {
-  content: '';
+  content: ':host([effect="cover"]) > .offStageNext';
 }
 :host([effect="cover"]) ::content .offStageNext {
   -webkit-transform: translateX(100%);
   transform: translateX(100%);
 }
 polyfill-next-selector {
-  content: '';
+  content: ':host([effect="cover"]) > .enteringStageFromNext, :host([effect="cover"]) > .leavingStageToNext';
 }
 :host([effect="cover"]) ::content .enteringStageFromNext,
 :host([effect="cover"]) ::content .leavingStageToNext {

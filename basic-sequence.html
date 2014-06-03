@@ -72,12 +72,8 @@ Polymer( "basic-sequence", {
   },
 
   ready: function() {
-    // TODO: Support Safari with "webkitTransitionEnd". Don't wire up both on Chrome.
-    // this.addEventListener( "webkitTransitionEnd", function() {
-    //   console.log( "webkitTransitionEnd" );
-    // });
     this.addEventListener( "transitionend", function( event ) {
-      console.log( "transitionend" );
+      // console.log( "transitionend" );
       this._transitionComplete( event.target );
     }.bind( this ));
   },
@@ -107,6 +103,12 @@ Polymer( "basic-sequence", {
     }
   },
 
+  _freezeSize: function() {
+    var selectedItem = this.selectedItem;
+    this.style.height = selectedItem.offsetHeight + "px";
+    this.style.width = selectedItem.offsetWidth + "px";
+  },
+
   _transitionComplete: function( element ) {
     element.classList.remove( "sequenceTransition" );
     element.classList.remove( "enteringStage" );
@@ -115,6 +117,7 @@ Polymer( "basic-sequence", {
     element.classList.remove( "leavingStage" );
     element.classList.remove( "leavingStageToNext" );
     element.classList.remove( "leavingStageToPrevious" );
+    this._unfreezeSize();
   },
 
   _transitionToIndex: function( newIndex ) {
@@ -146,6 +149,7 @@ Polymer( "basic-sequence", {
 
     if ( this.effect != null && this.effect !== "" ) {
       // Start transition.
+      // this._freezeSize();
       oldItem.classList.add( "sequenceTransition" );
       oldItem.classList.add( "leavingStage" );
       oldItem.classList.add( movingForward ? "leavingStageToPrevious": "leavingStageToNext" );
@@ -155,7 +159,12 @@ Polymer( "basic-sequence", {
     }
   },
 
-  _previousSelectionIndex: null
+  _previousSelectionIndex: null,
+
+  _unfreezeSize: function() {
+    this.style.height = "";
+    this.style.width = "";
+  }
 
 });
 </script>
