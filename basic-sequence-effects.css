@@ -12,12 +12,14 @@ polyfill-next-selector {
 :host([effect="crossfade"]) ::content .sequenceTransition {
   transition: opacity 0.8s;
 }
+
 polyfill-next-selector {
   content: ':host([effect="crossfade"]) > .offStage';
 }
 :host([effect="crossfade"]) ::content .offStage {
   opacity: 0;
 }
+
 polyfill-next-selector {
   content: ':host([effect="crossfade"]) > .core-selected';
 }
@@ -30,30 +32,34 @@ polyfill-next-selector {
   content: ':host([effect="slide"]) > .sequenceTransition';
 }
 :host([effect="slide"]) ::content .sequenceTransition {
-  transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s; /* Safari */
   transition: transform 0.3s;
 }
+
 polyfill-next-selector {
   content: ':host([effect="slide"]) > .offStagePrevious';
 }
 :host([effect="slide"]) ::content .offStagePrevious {
-  -webkit-transform: translateX(-100%);
+  -webkit-transform: translateX(-100%); /* Safari */
   transform: translateX(-100%);
 }
+
 polyfill-next-selector {
   content: ':host([effect="slide"]) > .offStageNext';
 }
 :host([effect="slide"]) ::content .offStageNext {
-  -webkit-transform: translateX(100%);
+  -webkit-transform: translateX(100%); /* Safari */
   transform: translateX(100%);
 }
+
 polyfill-next-selector {
   content: ':host([effect="slide"]) > .onStage';
 }
 :host([effect="slide"]) ::content .onStage {
-  -webkit-transform: translateX(0);
+  -webkit-transform: translateX(0);  /* Safari */
   transform: translateX(0);
 }
+
 
 /*
  * Reveal going forward, cover going backwards.
@@ -64,23 +70,26 @@ polyfill-next-selector {
   content: ':host([effect="reveal"]) > .sequenceTransition';
 }
 :host([effect="reveal"]) ::content .sequenceTransition {
-  transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;  /* Safari */
   transition: transform 0.3s;
 }
+
 polyfill-next-selector {
   content: ':host([effect="reveal"]) > .offStagePrevious';
 }
 :host([effect="reveal"]) ::content .offStagePrevious {
-  -webkit-transform: translateX(-100%);
+  -webkit-transform: translateX(-100%);  /* Safari */
   transform: translateX(-100%);
 }
+
 polyfill-next-selector {
   content: ':host([effect="reveal"]) > .offStageNext';
 }
 :host([effect="reveal"]) ::content .offStageNext {
-  -webkit-transform: translateX(0.01px);
+  -webkit-transform: translateX(0.01px);  /* Safari */
   transform: translateX(0.01px);
 }
+
 polyfill-next-selector {
   content: ':host([effect="reveal"]) > .enteringStageFromPrevious, :host([effect="reveal"]) > .leavingStageToPrevious';
 }
@@ -88,6 +97,7 @@ polyfill-next-selector {
 :host([effect="reveal"]) ::content .leavingStageToPrevious {
   z-index: 1;
 }
+
 
 /*
  * Cover going forward, reveal going backwards.
@@ -97,23 +107,26 @@ polyfill-next-selector {
   content: ':host([effect="cover"]) > .sequenceTransition';
 }
 :host([effect="cover"]) ::content .sequenceTransition {
-  transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;  /* Safari */
   transition: transform 0.3s;
 }
+
 polyfill-next-selector {
   content: ':host([effect="cover"]) > .offStagePrevious';
 }
 :host([effect="cover"]) ::content .offStagePrevious {
-  -webkit-transform: translateX(0.01px);
+  -webkit-transform: translateX(0.01px);  /* Safari */
   transform: translateX(0.01px);
 }
+
 polyfill-next-selector {
   content: ':host([effect="cover"]) > .offStageNext';
 }
 :host([effect="cover"]) ::content .offStageNext {
-  -webkit-transform: translateX(100%);
+  -webkit-transform: translateX(100%);  /* Safari */
   transform: translateX(100%);
 }
+
 polyfill-next-selector {
   content: ':host([effect="cover"]) > .enteringStageFromNext, :host([effect="cover"]) > .leavingStageToNext';
 }
