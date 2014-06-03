@@ -16,7 +16,7 @@
   }
 
   polyfill-next-selector {
-    content: ':host([effect]) .sequenceTransition';
+    content: ':host([effect]) > .sequenceTransition';
   }
   :host([effect]) ::content .sequenceTransition {
     visibility: visible;
@@ -117,7 +117,6 @@ Polymer( "basic-sequence", {
     element.classList.remove( "leavingStage" );
     element.classList.remove( "leavingStageToNext" );
     element.classList.remove( "leavingStageToPrevious" );
-    this._unfreezeSize();
   },
 
   _transitionToIndex: function( newIndex ) {
@@ -159,12 +158,7 @@ Polymer( "basic-sequence", {
     }
   },
 
-  _previousSelectionIndex: null,
-
-  _unfreezeSize: function() {
-    this.style.height = "";
-    this.style.width = "";
-  }
+  _previousSelectionIndex: null
 
 });
 </script>
