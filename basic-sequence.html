@@ -5,6 +5,13 @@
 <template>
   <style>
   polyfill-next-selector {
+    content: '.core-selected';
+  }
+  ::content .core-selected {
+    position: relative; /* Helps effects that want to apply z-index. */
+  }
+
+  polyfill-next-selector {
     content: ':not(.core-selected)';
   }
   ::content :not(.core-selected) {
@@ -16,9 +23,9 @@
   }
 
   polyfill-next-selector {
-    content: ':host([effect]) > .sequenceTransition';
+    content: '.sequenceTransition';
   }
-  :host([effect]) ::content .sequenceTransition {
+  ::content .sequenceTransition {
     visibility: visible;
   }
   </style>
@@ -73,8 +80,9 @@ Polymer( "basic-sequence", {
 
   ready: function() {
     this.addEventListener( "transitionend", function( event ) {
-      // console.log( "transitionend" );
-      this._transitionComplete( event.target );
+      if ( this.getAttribute( "debug" ) !== "" ) {
+        this._transitionComplete( event.target );
+      }
     }.bind( this ));
   },
 

@@ -4,7 +4,6 @@
  * In general, the effect of going backward should be like replaying the forward
  * effect in reverse. Effect names describe what happens when going forward.
  */
-
 /* A simple crossfade */
 polyfill-next-selector {
   content: ':host([effect="crossfade"]) > .sequenceTransition';
