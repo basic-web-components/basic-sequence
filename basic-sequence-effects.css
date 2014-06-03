@@ -10,7 +10,7 @@ polyfill-next-selector {
   content: ':host([effect="crossfade"]) > .sequenceTransition';
 }
 :host([effect="crossfade"]) ::content .sequenceTransition {
-  transition: opacity 1s;
+  transition: opacity 0.8s;
 }
 polyfill-next-selector {
   content: ':host([effect="crossfade"]) > .offStage';
@@ -30,24 +30,28 @@ polyfill-next-selector {
   content: ':host([effect="slide"]) > .sequenceTransition';
 }
 :host([effect="slide"]) ::content .sequenceTransition {
+  transition: -webkit-transform 0.3s;
   transition: transform 0.3s;
 }
 polyfill-next-selector {
   content: ':host([effect="slide"]) > .offStagePrevious';
 }
 :host([effect="slide"]) ::content .offStagePrevious {
+  -webkit-transform: translateX(-100%);
   transform: translateX(-100%);
 }
 polyfill-next-selector {
   content: ':host([effect="slide"]) > .offStageNext';
 }
 :host([effect="slide"]) ::content .offStageNext {
+  -webkit-transform: translateX(100%);
   transform: translateX(100%);
 }
 polyfill-next-selector {
   content: ':host([effect="slide"]) > .onStage';
 }
 :host([effect="slide"]) ::content .onStage {
+  -webkit-transform: translateX(0);
   transform: translateX(0);
 }
 
@@ -60,18 +64,21 @@ polyfill-next-selector {
   content: '';
 }
 :host([effect="reveal"]) ::content .sequenceTransition {
+  transition: -webkit-transform 0.3s;
   transition: transform 0.3s;
 }
 polyfill-next-selector {
   content: '';
 }
 :host([effect="reveal"]) ::content .offStagePrevious {
+  -webkit-transform: translateX(-100%);
   transform: translateX(-100%);
 }
 polyfill-next-selector {
   content: '';
 }
 :host([effect="reveal"]) ::content .offStageNext {
+  -webkit-transform: translateX(0.01px);
   transform: translateX(0.01px);
 }
 polyfill-next-selector {
@@ -90,18 +97,21 @@ polyfill-next-selector {
   content: '';
 }
 :host([effect="cover"]) ::content .sequenceTransition {
+  transition: -webkit-transform 0.3s;
   transition: transform 0.3s;
 }
 polyfill-next-selector {
   content: '';
 }
 :host([effect="cover"]) ::content .offStagePrevious {
+  -webkit-transform: translateX(0.01px);
   transform: translateX(0.01px);
 }
 polyfill-next-selector {
   content: '';
 }
 :host([effect="cover"]) ::content .offStageNext {
+  -webkit-transform: translateX(100%);
   transform: translateX(100%);
 }
 polyfill-next-selector {

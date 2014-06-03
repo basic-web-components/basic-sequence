@@ -76,6 +76,7 @@ Polymer( "basic-sequence", {
     //   console.log( "webkitTransitionEnd" );
     // });
     this.addEventListener( "transitionend", function( event ) {
+      console.log( "transitionend" );
       this._transitionComplete( event.target );
     }.bind( this ));
   },
