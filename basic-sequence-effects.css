@@ -4,6 +4,45 @@
  * In general, the effect of going backward should be like replaying the forward
  * effect in reverse. Effect names describe what happens when going forward.
  */
+
+
+/*
+ * Cover going forward, reveal going backwards.
+ * The effect is like starting with one card, then piling on more.
+ */
+polyfill-next-selector {
+  content: ':host([effect=cover]) > .sequenceTransition';
+}
+:host([effect=cover]) ::content .sequenceTransition {
+  transition: -webkit-transform 0.3s;  /* Safari */
+  transition: transform 0.3s;
+}
+
+polyfill-next-selector {
+  content: ':host([effect=cover]) > .offStagePrevious';
+}
+:host([effect=cover]) ::content .offStagePrevious {
+  -webkit-transform: translateX(0.01px);  /* Safari */
+  transform: translateX(0.01px);
+}
+
+polyfill-next-selector {
+  content: ':host([effect=cover]) > .offStageNext';
+}
+:host([effect=cover]) ::content .offStageNext {
+  -webkit-transform: translateX(100%);  /* Safari */
+  transform: translateX(100%);
+}
+
+polyfill-next-selector {
+  content: ':host([effect=cover]) > .enteringStageFromNext, :host([effect=cover]) > .leavingStageToNext';
+}
+:host([effect=cover]) ::content .enteringStageFromNext,
+:host([effect=cover]) ::content .leavingStageToNext {
+  z-index: 1;
+}
+
+
 /* A simple crossfade */
 polyfill-next-selector {
   content: ':host([effect=crossfade]) > .sequenceTransition';
@@ -24,39 +63,6 @@ polyfill-next-selector {
 }
 :host([effect=crossfade]) ::content .core-selected {
   opacity: 1;
-}
-
-/* Incoming element pushes out outgoing element */
-polyfill-next-selector {
-  content: ':host([effect=slide]) > .sequenceTransition';
-}
-:host([effect=slide]) ::content .sequenceTransition {
-  transition: -webkit-transform 0.3s; /* Safari */
-  transition: transform 0.3s;
-}
-
-polyfill-next-selector {
-  content: ':host([effect=slide]) > .offStagePrevious';
-}
-:host([effect=slide]) ::content .offStagePrevious {
-  -webkit-transform: translateX(-100%); /* Safari */
-  transform: translateX(-100%);
-}
-
-polyfill-next-selector {
-  content: ':host([effect=slide]) > .offStageNext';
-}
-:host([effect=slide]) ::content .offStageNext {
-  -webkit-transform: translateX(100%); /* Safari */
-  transform: translateX(100%);
-}
-
-polyfill-next-selector {
-  content: ':host([effect=slide]) > .onStage';
-}
-:host([effect=slide]) ::content .onStage {
-  -webkit-transform: translateX(0);  /* Safari */
-  transform: translateX(0);
 }
 
 
@@ -98,38 +104,35 @@ polyfill-next-selector {
 }
 
 
-/*
- * Cover going forward, reveal going backwards.
- * The effect is like starting with one card, then piling on more.
- */
+/* Incoming element pushes out outgoing element */
 polyfill-next-selector {
-  content: ':host([effect=cover]) > .sequenceTransition';
+  content: ':host([effect=slide]) > .sequenceTransition';
 }
-:host([effect=cover]) ::content .sequenceTransition {
-  transition: -webkit-transform 0.3s;  /* Safari */
+:host([effect=slide]) ::content .sequenceTransition {
+  transition: -webkit-transform 0.3s; /* Safari */
   transition: transform 0.3s;
 }
 
 polyfill-next-selector {
-  content: ':host([effect=cover]) > .offStagePrevious';
+  content: ':host([effect=slide]) > .offStagePrevious';
 }
-:host([effect=cover]) ::content .offStagePrevious {
-  -webkit-transform: translateX(0.01px);  /* Safari */
-  transform: translateX(0.01px);
+:host([effect=slide]) ::content .offStagePrevious {
+  -webkit-transform: translateX(-100%); /* Safari */
+  transform: translateX(-100%);
 }
 
 polyfill-next-selector {
-  content: ':host([effect=cover]) > .offStageNext';
+  content: ':host([effect=slide]) > .offStageNext';
 }
-:host([effect=cover]) ::content .offStageNext {
-  -webkit-transform: translateX(100%);  /* Safari */
+:host([effect=slide]) ::content .offStageNext {
+  -webkit-transform: translateX(100%); /* Safari */
   transform: translateX(100%);
 }
 
 polyfill-next-selector {
-  content: ':host([effect=cover]) > .enteringStageFromNext, :host([effect=cover]) > .leavingStageToNext';
+  content: ':host([effect=slide]) > .onStage';
 }
-:host([effect=cover]) ::content .enteringStageFromNext,
-:host([effect=cover]) ::content .leavingStageToNext {
-  z-index: 1;
+:host([effect=slide]) ::content .onStage {
+  -webkit-transform: translateX(0);  /* Safari */
+  transform: translateX(0);
 }
