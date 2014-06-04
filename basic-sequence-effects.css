@@ -65,6 +65,13 @@ polyfill-next-selector {
   opacity: 1;
 }
 
+polyfill-next-selector {
+  content: ':host([effect=crossfade]) #effectContainer > .enteringStage';
+}
+:host([effect=crossfade]) ::content .enteringStage {
+  z-index: 1;
+}
+
 
 /*
  * Reveal going forward, cover going backwards.
