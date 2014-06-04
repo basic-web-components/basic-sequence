@@ -24,19 +24,6 @@ sequence-navigator.
 <template>
   
   <style>
-  /*
-  The effectContainer and clipContainer work together to ensure that off stage
-  elements are not visible outside the component's expected boundaries during
-  transitions.
-  */
-  #effectContainer {
-    display: -webkit-flex;
-    display: flex;
-  }
-  #clipContainer {
-    overflow: hidden;
-  }
-
   polyfill-next-selector {
     content: '.core-selected';
   }
@@ -53,6 +40,30 @@ sequence-navigator.
     position: absolute;
     top: 0;
     visibility: hidden;
+  }
+
+  /*
+   * The effectContainer and clipContainer work together to ensure that off
+   * stage elements are not visible outside the component's expected boundaries
+   * during transitions.
+   */
+  #effectContainer {
+    display: -webkit-flex;
+    display: flex;
+  }
+  #clipContainer {
+    display: block;
+    overflow: hidden;
+  }
+  /*
+   * HACK: For some reason, our :not(.core-selected) content styling defined
+   * above gets applied to the two special containers — even those things are
+   * in shadow, not in content. Until we can figure out why, force those the
+   * containers to be visible.
+   */
+  .specialContainer {
+    position: relative !important;
+    visibility: visible !important;
   }
 
   polyfill-next-selector {
@@ -72,8 +83,8 @@ sequence-navigator.
   </style>
   <link rel="stylesheet" href="basic-sequence-effects.css">
 
-  <div id="effectContainer">
-    <div id="clipContainer">
+  <div id="effectContainer" class="specialContainer">
+    <div id="clipContainer" class="specialContainer">
       <shadow></shadow>
     </div>
   </div>
