@@ -28,6 +28,14 @@
   ::content .sequenceTransition {
     visibility: visible;
   }
+
+  polyfill-next-selector {
+    content: ':host > *';
+  }
+  ::content > * {
+    display: block; /* Lets img/inline elements align better */
+    max-width: 100%; /* Helpful for responsive cases */
+  }
   </style>
   <link rel="stylesheet" href="basic-sequence-effects.css">
   <shadow></shadow>
