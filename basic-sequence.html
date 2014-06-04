@@ -24,6 +24,19 @@ sequence-navigator.
 <template>
   
   <style>
+  /*
+  The effectContainer and clipContainer work together to ensure that off stage
+  elements are not visible outside the component's expected boundaries during
+  transitions.
+  */
+  #effectContainer {
+    display: -webkit-flex;
+    display: flex;
+  }
+  #clipContainer {
+    overflow: hidden;
+  }
+
   polyfill-next-selector {
     content: '.core-selected';
   }
@@ -59,7 +72,11 @@ sequence-navigator.
   </style>
   <link rel="stylesheet" href="basic-sequence-effects.css">
 
-  <shadow></shadow>
+  <div id="effectContainer">
+    <div id="clipContainer">
+      <shadow></shadow>
+    </div>
+  </div>
 
 </template>
 
