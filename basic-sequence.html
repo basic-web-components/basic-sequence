@@ -43,18 +43,19 @@ sequence-navigator.
   }
 
   /*
-   * The effectContainer and clipContainer work together to ensure that off
-   * stage elements are not visible outside the component's expected boundaries
-   * during transitions.
+   * The effectLayoutContainer and effectContainer work together to ensure that
+   * off stage elements are not visible outside the component's expected
+   * boundaries during transitions.
    */
-  #effectContainer {
+  #effectLayoutContainer {
     display: -webkit-flex;
     display: flex;
   }
-  #clipContainer {
+  #effectContainer {
     display: block;
     overflow: hidden;
   }
+
   /*
    * HACK: For some reason, our :not(.core-selected) content styling defined
    * above gets applied to the two special containers — even those things are
@@ -67,14 +68,14 @@ sequence-navigator.
   }
 
   polyfill-next-selector {
-    content: '.sequenceTransition';
+    content: '#effectContainer > .sequenceTransition';
   }
   ::content .sequenceTransition {
     visibility: visible;
   }
 
   polyfill-next-selector {
-    content: ':host > *';
+    content: '#effectContainer > *';
   }
   ::content > * {
     display: block; /* Lets img/inline elements align better */
@@ -83,8 +84,8 @@ sequence-navigator.
   </style>
   <link rel="stylesheet" href="basic-sequence-effects.css">
 
-  <div id="effectContainer" class="specialContainer">
-    <div id="clipContainer" class="specialContainer">
+  <div id="effectLayoutContainer" class="specialContainer">
+    <div id="effectContainer" class="specialContainer">
       <shadow></shadow>
     </div>
   </div>
@@ -157,14 +158,8 @@ Polymer( "basic-sequence", {
 
   selectedIndexChanged: function() {
     this.super();
-    this.canGoNext = this._canGoNext;
-    this.canGoPrevious = this._canGoPrevious;
-    var selectedIndex = this.selectedIndex;
-    Array.prototype.forEach.call( this.items, function( item, index ) {
-      item.classList.toggle( "offStage", index !== selectedIndex );
-      item.classList.toggle( "offStagePrevious", index < selectedIndex );
-      item.classList.toggle( "offStageNext", index > selectedIndex );
-    });
+    this._updateAbilities();
+    this._applyChildStyles();
     this._transitionToIndex( this.selectedIndex );
   },
 
@@ -193,6 +188,51 @@ Polymer( "basic-sequence", {
    */
   wrapAround: undefined,
 
+  wrapAroundChanged: function() {
+    this._updateAbilities();
+    this._applyChildStyles();
+  },
+
+  /*
+   * Decorate each child with styles so that it can be ready to transition.
+   */
+  _applyChildStyles: function() {
+    var selectedIndex = this.selectedIndex;
+    var items = this.items;
+    var itemsLength = items.length;
+    Array.prototype.forEach.call( items, function( item, index ) {
+      var onStage = ( index === selectedIndex );
+      item.classList.toggle( "onStage", onStage );
+      item.classList.toggle( "offStage", !onStage );
+      if ( !onStage ) {
+        var isAhead = this._isAhead( selectedIndex, index, itemsLength );
+        item.classList.toggle( "offStagePrevious", !isAhead );
+        item.classList.toggle( "offStageNext", isAhead );        
+      }
+    }.bind( this ));
+  },
+
+  /*
+   * Return true if we navigate forward to go from oldIndex to newIndex, false
+   * if we navigate backward.
+   */
+  _isAhead: function( oldIndex, newIndex, itemsLength ) {
+    var isAhead = oldIndex < newIndex;
+    var lastItemIndex = itemsLength - 1;
+    if ( this.wrapAround && itemsLength > 2 ) {
+      if ( oldIndex === lastItemIndex && newIndex === 0 ) {
+        // Will wrap to first item, so that's considered to be "ahead".
+        isAhead = true;
+      } else if ( oldIndex === 0 && newIndex === lastItemIndex ) {
+        // Will wrap to last item, so that's considered to be "behind".
+        isAhead = false;
+      }
+    }
+    return isAhead;
+  },
+
+  _previousSelectionIndex: null,
+
   _transitionComplete: function( element ) {
     element.classList.remove( "sequenceTransition" );
     element.classList.remove( "enteringStage" );
@@ -217,7 +257,7 @@ Polymer( "basic-sequence", {
     }
 
     var items = this.items;
-    var movingForward = ( newIndex > oldIndex );
+    var movingForward = this._isAhead( oldIndex, newIndex, items.length );
     var oldItem = items[ oldIndex ];
 
     oldItem.classList.remove( "onStage" );
@@ -241,7 +281,11 @@ Polymer( "basic-sequence", {
     }
   },
 
-  _previousSelectionIndex: null
+  /* Can drop this once we have bindable, read-only properties */
+  _updateAbilities: function() {
+    this.canGoNext = this._canGoNext;
+    this.canGoPrevious = this._canGoPrevious;    
+  }
 
 });
 </script>
