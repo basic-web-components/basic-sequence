@@ -1,8 +1,28 @@
+<!--
+A modal sequence of child elements with previous/next semantics and transition
+effects.
+
+This is a useful base class for slideshows, image carousels, and other cases
+where a sequence of items are shown. This extends the basic-modes base class to
+add the notion of moving to the next or previous item in a sequence.
+
+A small set of standard transition effects is included. You can define your own
+effects through CSS, especially CSS transitions.
+
+This component does not include UI controls or keyboard support for moving
+between items; you must supply such controls yourself. For a common pattern that
+lets a user navigate with next/previous buttons and arrow keys, see basic-
+sequence-navigator.
+
+@element basic-sequence
+-->
+
 <link rel="import" href="../basic-modes/basic-modes.html">
 
 <polymer-element name="basic-sequence" extends="basic-modes" attributes="canGoNext canGoPrevious">
 
 <template>
+  
   <style>
   polyfill-next-selector {
     content: '.core-selected';
@@ -38,7 +58,9 @@
   }
   </style>
   <link rel="stylesheet" href="basic-sequence-effects.css">
+
   <shadow></shadow>
+
 </template>
 
 <script>
@@ -81,6 +103,14 @@ Polymer( "basic-sequence", {
   },
 
   publish: {
+    /**
+     * Determines the transition effect applied when moving to the next or
+     * previous item in the sequence. Standard supported effects are: "cover",
+     * "crossfade", "reveal", and "slide". By default, no effect is applied.
+     * New effects can be defined with CSS transitions.
+     *
+     * @property effect
+     */
     effect: {
       reflect: true
     }
@@ -88,9 +118,7 @@ Polymer( "basic-sequence", {
 
   ready: function() {
     this.addEventListener( "transitionend", function( event ) {
-      if ( this.getAttribute( "debug" ) !== "" ) {
-        this._transitionComplete( event.target );
-      }
+      this._transitionComplete( event.target );
     }.bind( this ));
   },
 
@@ -117,12 +145,6 @@ Polymer( "basic-sequence", {
     if ( this.canGoPrevious ) {
       this.selected = this.selectedIndex - 1;
     }
-  },
-
-  _freezeSize: function() {
-    var selectedItem = this.selectedItem;
-    this.style.height = selectedItem.offsetHeight + "px";
-    this.style.width = selectedItem.offsetWidth + "px";
   },
 
   _transitionComplete: function( element ) {
@@ -164,7 +186,6 @@ Polymer( "basic-sequence", {
 
     if ( this.effect != null && this.effect !== "" ) {
       // Start transition.
-      // this._freezeSize();
       oldItem.classList.add( "sequenceTransition" );
       oldItem.classList.add( "leavingStage" );
       oldItem.classList.add( movingForward ? "leavingStageToPrevious": "leavingStageToNext" );
