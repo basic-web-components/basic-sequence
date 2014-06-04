@@ -19,7 +19,7 @@ sequence-navigator.
 
 <link rel="import" href="../basic-modes/basic-modes.html">
 
-<polymer-element name="basic-sequence" extends="basic-modes" attributes="canGoNext canGoPrevious">
+<polymer-element name="basic-sequence" extends="basic-modes" attributes="canGoNext canGoPrevious wrapAround">
 
 <template>
   
@@ -68,6 +68,7 @@ Polymer( "basic-sequence", {
 
   /**
    * True if it there is at least one child after the active one.
+   * If wrapAround is set, this is always true.
    *
    * @property canGoNext
    */
@@ -76,18 +77,19 @@ Polymer( "basic-sequence", {
   // See http://stackoverflow.com/questions/23900203/easiest-way-for-a-polymer-element-to-declare-a-bindable-property-with-a-getter-s.
   canGoNext: false,
   get _canGoNext() {
-    return ( this.selectedIndex + 1 < this.distributedChildren.length );
+    return ( this.wrapAround || this.selectedIndex + 1 < this.distributedChildren.length );
   },
 
   /**
    * True if it there is at least one child after the active one. Read-only.
+   * If wrapAround is set, this is always true.
    *
    * @property canGoPrevious
    */
   // TODO: See note at canGoNext.
   canGoPrevious: false,
   get _canGoPrevious() {
-    return ( this.selectedIndex > 0 );
+    return ( this.wrapAround || this.selectedIndex > 0 );
   },
 
   /**
@@ -97,8 +99,11 @@ Polymer( "basic-sequence", {
    * @method next
    */
   next: function() {
-    if ( this.canGoNext ) {
-      this.selected = this.selectedIndex + 1;
+    var nextIndex = this.selectedIndex + 1;
+    if ( this.wrapAround ) {
+      this.selected = nextIndex % this.items.length;
+    } else if ( this.canGoNext ) {
+      this.selected = nextIndex;
     }
   },
 
@@ -142,10 +147,23 @@ Polymer( "basic-sequence", {
    * @method previous
    */
   previous: function() {
-    if ( this.canGoPrevious ) {
-      this.selected = this.selectedIndex - 1;
+    var previousIndex = this.selectedIndex - 1;
+    if ( this.wrapAround ) {
+      if ( previousIndex < 0 ) {
+        previousIndex = this.items.length - 1;
+      }
+      this.selected = previousIndex;
+    } else if ( this.canGoPrevious ) {
+      this.selected = previousIndex;
     }
   },
+
+  /**
+   * If false (the default), the sequence ends at the last item. If true, the
+   * sequence wraps around: moving next from the last item navigates to the
+   * first, and moving previous from the first item navigates to the last.
+   */
+  wrapAround: undefined,
 
   _transitionComplete: function( element ) {
     element.classList.remove( "sequenceTransition" );
