@@ -59,6 +59,13 @@ polyfill-next-selector {
 }
 
 polyfill-next-selector {
+  content: ':host([effect=crossfade]) #effectContainer > .sequenceTransition.offStage';
+}
+:host([effect=crossfade]) ::content .sequenceTransition.offStage {
+  opacity: 0.99;
+}
+
+polyfill-next-selector {
   content: ':host([effect=crossfade]) #effectContainer > .core-selected';
 }
 :host([effect=crossfade]) ::content .core-selected {
