@@ -22,14 +22,35 @@ body {
 basic-framed-content {
   padding: 2em;
 }
+
+img {
+  max-height: 300px;
+  max-width: 400px;
+}
 </style>
 
 </head>
 
+<!--
+Sample images from Wikimedia Commons
+http://creativecommons.org/licenses/by/4.0/legalcode
+Jacek Halicki, CC BY-SA 3.0
+Myrabella, Wikimedia Commons, CC-BY-SA-4.0
+©CEphoto, Uwe Aranas, CC-BY-SA-3.0
+©Dietmar Rabich, rabich.de, CC BY-SA 4.0
+-->
+
 <body unresolved>
 <basic-framed-content>
-<basic-sequence>
-</basic-sequence>
+  <button onclick="document.querySelector('#sequence').previous()">Previous</button>
+  <button onclick="document.querySelector('#sequence').next()">Next</button>
+  <basic-sequence id="sequence" effect="reveal">
+    <img src="images/image1.jpg">
+    <img src="images/image2.jpg">
+    <img src="images/image3.jpg">
+    <img src="images/image4.jpg">
+    <img src="images/image5.jpg">
+  </basic-sequence>
 </basic-framed-content>
 </body>
 
