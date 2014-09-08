@@ -33,9 +33,9 @@ sequence-navigator.
   }
 
   polyfill-next-selector {
-    content: ':not(.core-selected)';
+    content: '#effectContainer > :not(.core-selected)';
   }
-  ::content :not(.core-selected) {
+  ::content > :not(.core-selected) {
     display: block;
     left: 0;
     position: absolute;
@@ -57,21 +57,10 @@ sequence-navigator.
     overflow: hidden;
   }
 
-  /*
-   * HACK: For some reason, our :not(.core-selected) content styling defined
-   * above gets applied to the two special containers — even those things are
-   * in shadow, not in content. Until we can figure out why, force those the
-   * containers to be visible.
-   */
-  .specialContainer {
-    position: relative !important;
-    visibility: visible !important;
-  }
-
   polyfill-next-selector {
     content: '#effectContainer > .sequenceTransition';
   }
-  ::content .sequenceTransition {
+  ::content > .sequenceTransition {
     visibility: visible;
   }
 
