@@ -147,6 +147,7 @@ Polymer({
   },
 
   ready: function() {
+    this.super();
     this.addEventListener( "transitionend", function( event ) {
       this._transitionComplete( event.target );
     }.bind( this ));
